@@ -10,7 +10,7 @@ const CandlestickChart = ({ children, data, coinId, height = 360, initialPeriod 
   'daily'
 }: CandlestickChartProps) => {
 
-  const [loading, setLoading] = useState(false)
+
   const [period, setPeriod] = useState(initialPeriod)
   const [ohlcData, setOhlcData] = useState<OHLCData[]>(data ?? [])
   const [isPending, startTransition] = useTransition()
@@ -73,7 +73,7 @@ const CandlestickChart = ({ children, data, coinId, height = 360, initialPeriod 
       chartRef.current = null
       candleSeriesRef.current = null
     }
-  }, [height])
+  }, [height, period])
   useEffect(() => {
     if (!candleSeriesRef.current) return
     candleSeriesRef.current.setData(convertOHLCData(ohlcData))
@@ -86,7 +86,7 @@ const CandlestickChart = ({ children, data, coinId, height = 360, initialPeriod 
         <div className='button-group'>
           <span className='text-sm mx-2 font-medium text-purple-100/50'>Period: </span>
           {PERIOD_BUTTONS.map(({ value, label }) => (
-            <button key={value} className={period === value ? "config-button-active" : "config-button"} onClick={() => handlePeriodChange(value)} disabled={loading}>{label}</button>
+            <button key={value} className={period === value ? "config-button-active" : "config-button"} onClick={() => handlePeriodChange(value)} disabled={isPending}>{label}</button>
           ))}
         </div>
       </div>
